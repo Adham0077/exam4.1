@@ -28,6 +28,7 @@ import { AccessRoles } from 'src/common/decorator/roles.decorator';
 import { AuthGuard } from 'src/common/guard/auth.guard';
 import { RolesGuard } from 'src/common/guard/role.guard';
 import { In } from 'typeorm';
+import { config } from 'src/config';
 
 @ApiTags('User')
 @Controller('admin')
@@ -67,20 +68,20 @@ export class UserController {
   }
 
   @Post('token')
-  newToken(@CookieGetter('adminToken') token: string) {
+  newToken(@CookieGetter(config.TOKEN.REFRESH_KEY) token: string) {
     return this.authService.newToken(this.userService.getRepository, token);
   }
 
   @Post('signout')
   signOut(
-    @CookieGetter('adminToken') token: string,
+    @CookieGetter(config.TOKEN.REFRESH_KEY) token: string,
     @Res({ passthrough: true }) res: Response,
   ) {
     return this.authService.signOut(
       this.userService.getRepository,
       token,
       res,
-      'adminToken',
+      config.TOKEN.REFRESH_KEY,
     );
   }
 

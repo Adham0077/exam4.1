@@ -95,7 +95,7 @@ export class UserService
     };
     const accessToken = await this.tokenService.accessToken(payload);
     const refreshToken = await this.tokenService.refreshToken(payload);
-    await this.tokenService.writeCookie(res, 'adminToken', refreshToken, 15);
+    await this.tokenService.writeCookie(res, config.TOKEN.REFRESH_KEY, refreshToken, 15);
     return successRes({ token: accessToken });
   }
   async updateUser(
